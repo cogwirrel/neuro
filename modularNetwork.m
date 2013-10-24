@@ -22,12 +22,36 @@ function network = modularNetwork(nodes, communities, edges, pRewiring)
 		end
 	end
 
-	% Rewiring phase
-	% For each connection (look into matlab function 'sparse()' - adjacency list gives us connections nicely and sparse might give us the adjacency list maybe...)
-	% Choose to rewire with pRewiring
-	% If we choose to rewire, remove the connection we are looking at
-	% Connect the source node to a random node in a random community
+	% Rewiring
+	for i = 1:nodes
+		for j = 1:nodes
+			if network(i,j) == 1 && rand < pRewiring
+				% remove existing edge
+				network(i,j) = 0;
 
+				%TODO: pick random other community from i node
+				nodeCommunity = mod(i,communities);
+				if nodeCommunity == 0
+					nodeCommunity = communities;
+				end
+
+				newCommunity = randi(communities);
+				while(newCommunity == nodeCommunity)
+					newCommunity = randi(communities);
+				end
+
+				communityNodes = communitySplit(nodes,communities,newCommunity);
+				newNode = communityNodes(randi(size(communityNodes,1)));
+
+				nodeCommunity
+				newCommunity
+				communityNodes
+				newNode
+
+				network(i,newNode) = 1;
+			end
+		end
+	end
 
 	% plot network (only works for 10 nodes)
 	if nodes == 10
