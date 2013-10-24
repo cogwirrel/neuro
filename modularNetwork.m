@@ -22,6 +22,13 @@ function network = modularNetwork(nodes, communities, edges, pRewiring)
 		end
 	end
 
+	% Rewiring phase
+	% For each connection (look into matlab function 'sparse()' - adjacency list gives us connections nicely and sparse might give us the adjacency list maybe...)
+	% Choose to rewire with pRewiring
+	% If we choose to rewire, remove the connection we are looking at
+	% Connect the source node to a random node in a random community
+
+
 	% plot network (only works for 10 nodes)
 	if nodes == 10
 		gplot(network,[3,9;8,9;6,4;4,7;10,8;5,2;2,6;7,7;4,4;1,8],'--*')
