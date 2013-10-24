@@ -13,20 +13,19 @@ function network = modularNetwork(nodes, communities, edges, pRewiring)
 
 		% number of edges for current community
 		communityEdges = size(communitySplit(edges, communities, community),2);
+		
 		% sample random edges for current community
-
-		allPairs(communityNodes)
-		communityEdges
-
 		randomEdges = datasample(allPairs(communityNodes),communityEdges, 'Replace', false);
 
 		% add edges to adjacency matrix
-
 		for e = 1:size(randomEdges,1)
 			network(randomEdges(e,1),randomEdges(e,2)) = 1;
 		end
 	end
 
-	gplot(network,[3,9;8,9;6,4;4,7;10,8;5,2;2,6;8,6;4,4;1,8],'-*')
+	% plot network (only works for 10 nodes)
+	if nodes == 10
+		gplot(network,[3,9;8,9;6,4;4,7;10,8;5,2;2,6;8,6;4,4;1,8],':*')
+	end
 
 end
