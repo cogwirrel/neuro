@@ -5,10 +5,9 @@ function network = modularNetwork(nodes, communities, edges, pRewiring)
 
 	network = zeros(nodes, nodes);
 
-	%TODO: Check that number of edges < possible edges (2 * nodes * nodes)
-
 	for community = 1:communities
 
+		% list of nodes in current community
 		communityNodes = communitySplit(nodes, communities, community);
 
 		% number of edges for current community
@@ -25,7 +24,7 @@ function network = modularNetwork(nodes, communities, edges, pRewiring)
 
 	% plot network (only works for 10 nodes)
 	if nodes == 10
-		gplot(network,[3,9;8,9;6,4;4,7;10,8;5,2;2,6;8,6;4,4;1,8],':*')
+		gplot(network,[3,9;8,9;6,4;4,7;10,8;5,2;2,6;7,7;4,4;1,8],'--*')
 	end
 
 end
