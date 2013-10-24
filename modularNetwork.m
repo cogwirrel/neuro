@@ -7,21 +7,26 @@ function network = modularNetwork(nodes, communities, edges, pRewiring)
 
 	%TODO: Check that number of edges < possible edges (2 * nodes * nodes)
 
-	for e = 1:edges
-		% Select the community that the edge will be in
-		community = mod(e, communities);
+	for community = 1:communities
 
-		% Pick 2 nodes in community
-		%TODO: neatify
+		communityNodes = communitySplit(nodes, communities, community);
 
-		communityNodes = nodesInCommunity(nodes, communities, community);
+		% number of edges for current community
+		communityEdges = size(communitySplit(edges, communities, community),2);
+		% sample random edges for current community
 
-		%TODO: get all pairs of nodes in community.
-		%TODO: take sample of number of edges in the pairs
-		%TODO: connect the nodes in the sample pairs
+		allPairs(communityNodes)
+		communityEdges
 
-		network(n1, n2) = 1;
+		randomEdges = datasample(allPairs(communityNodes),communityEdges, 'Replace', false);
 
+		% add edges to adjacency matrix
+
+		for e = 1:size(randomEdges,1)
+			network(randomEdges(e,1),randomEdges(e,2)) = 1;
+		end
 	end
+
+	gplot(network,[3,9;8,9;6,4;4,7;10,8;5,2;2,6;8,6;4,4;1,8],'-*')
 
 end
