@@ -50,17 +50,7 @@ function network = modularNetwork(nodes, communities, edges, pRewiring)
 			end
 		end
 	end
-	network = tempNetwork
+	network = tempNetwork;
 
-	% plot network (only works for 10 nodes)
-	if nodes == 10
-		subplot(1,2,1);
-		gplot(network,[3,9;8,9;6,4;4,7;10,8;5,2;2,6;7,7;4,4;1,8],'--*')
-
-		subplot(1,2,2);
-		plotAdjacencyGrid(nodes, communities, network);
-	else
-		plotAdjacencyGrid(nodes, communities, network);
-	end
-
+	plotAdjacencyGrid(nodes, communities, network);
 end

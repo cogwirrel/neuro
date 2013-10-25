@@ -4,11 +4,11 @@ function newNetwork = plotAdjacencyGrid(nodes, communities, network)
 	for i=1:communities
 		orderList = cat(2,orderList,communitySplit(nodes,communities,i));
 	end
-	orderList
+
 	for i=1:nodes
-		newOrderList(orderList(i)) = i;
+		tempOrderList(orderList(i)) = i;
 	end
-	orderList = newOrderList;
+	orderList = tempOrderList;
 
 	for i=1:nodes
 		for j=1:nodes
@@ -17,7 +17,4 @@ function newNetwork = plotAdjacencyGrid(nodes, communities, network)
 	end
 
 	spy(newNetwork);
-	newNetwork
-
-
 end
