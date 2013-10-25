@@ -16,15 +16,7 @@ function newNetwork = plotAdjacencyGrid(nodes, communities, network)
 		end
 	end
 
-	hold on
-	for i=1:nodes
-		for j=1:nodes
-			if newNetwork(i,j) == 1
-				plot(i,j,'-s');
-			end
-		end
-	end
-	hold off
+	spy(newNetwork);
 	newNetwork
 
 
