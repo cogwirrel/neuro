@@ -25,6 +25,7 @@ function network = modular(numExcitatory, numInhibitory, numCommunities, numExci
 
 		% add edges to adjacency matrix
 		for e = 1:size(randomEdges,1)
+			% EXCITATORY to EXCITATORY connection
 			network(randomEdges(e,1),randomEdges(e,2)) = 1;
 		end
 	end
@@ -48,6 +49,7 @@ function network = modular(numExcitatory, numInhibitory, numCommunities, numExci
 				newCommunityNodes = excitatoryCommunityNodes(newCommunity,:);
 				newNode = newCommunityNodes(randi(size(newCommunityNodes,2)));
 
+				% EXCITATORY to EXCITATORY connection
 				tempNetwork(i,newNode.id) = 1;
 			end
 		end
@@ -55,8 +57,33 @@ function network = modular(numExcitatory, numInhibitory, numCommunities, numExci
 	network = tempNetwork;
 
 	%%%%% INHIBITORY WIRING %%%%%
+
 	% Each inhibitory neuron has connections from 4 excitatory neurons
 	% from the same module
+	numConnectionsFromExcitatory = 4;
 
-	% Each inhibitory neuron connects to all other neurons in all modules
+	for inhibitoryNode = inhibitoryNodes
+		
+		% Find 4 random excitatory nodes in the same module to connect to the current inhibitory node
+		excitatoryNodesInSameCommunity = excitatoryCommunityNodes(inhibitoryNode.community,:);
+		excitatoryNodeIdsInSameCommunity = [excitatoryNodesInSameCommunity.id];
+		excitatoryNodesToConnect = datasample(excitatoryNodeIdsInSameCommunity, numConnectionsFromExcitatory, 'Replace', false);
+
+		% Add the connections to our adjacency matrix
+		for i = excitatoryNodesToConnect
+			% EXCITATORY to INHIBITORY connection
+			network(i, inhibitoryNode.id) = 1;
+		end
+
+		% Each inhibitory neuron connects to all other neurons in all modules
+		for j = 1:size(network,2)
+			% INHIBITORY to * connection
+			network(inhibitoryNode.id, j) = 1;
+		end
+
+		% Don't connect inhibitory neuron to itself
+		network(inhibitoryNode.id, inhibitoryNode.id) = 0;
+	end
+
+	
 end
