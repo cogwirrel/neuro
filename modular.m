@@ -10,14 +10,18 @@ function network = modular(numExcitatory, numInhibitory, numCommunities, numExci
 	% Set up the adjacency matrix
 	network = zeros(size(nodes,2), size(nodes,2));
 
+	excitatoryNodes = getNodesWithType(nodes, EXCITATORY);
+	inhibitoryNodes = getNodesWithType(nodes, INHIBITORY);
+
+	%%%%% EXCITATORY WIRING %%%%%
+
 	% Wire the excitatory neurons
 	for community = 1:numCommunities
-		communityNodes = getNodesInCommunity(nodes, community);
-		excitatoryCommunityNodes = getNodesWithType(communityNodes, EXCITATORY);
-		excitatoryCommunityNodeIds = [excitatoryCommunityNodes.id];
+		excitatoryCommunityNodes(community,:) = getNodesInCommunity(excitatoryNodes, community);
+		excitatoryCommunityNodeIds = [excitatoryCommunityNodes(community,:).id];
 
 		% sample random edges for current community
-		randomEdges = datasample(allPairs(excitatoryCommunityNodeIds),numExcitatoryEdgesPerCommunity, 'Replace', false);
+		randomEdges = datasample(allPairs(excitatoryCommunityNodeIds), numExcitatoryEdgesPerCommunity, 'Replace', false);
 
 		% add edges to adjacency matrix
 		for e = 1:size(randomEdges,1)
@@ -41,13 +45,18 @@ function network = modular(numExcitatory, numInhibitory, numCommunities, numExci
 					newCommunity = randi(numCommunities);
 				end
 
-				communityNodes = getNodesInCommunity(nodes, newCommunity);
-				excitatoryCommunityNodes = getNodesWithType(communityNodes, EXCITATORY);
-				newNode = excitatoryCommunityNodes(randi(size(excitatoryCommunityNodes,2)));
+				newCommunityNodes = excitatoryCommunityNodes(newCommunity,:);
+				newNode = newCommunityNodes(randi(size(newCommunityNodes,2)));
 
 				tempNetwork(i,newNode.id) = 1;
 			end
 		end
 	end
 	network = tempNetwork;
+
+	%%%%% INHIBITORY WIRING %%%%%
+	% Each inhibitory neuron has connections from 4 excitatory neurons
+	% from the same module
+
+	% Each inhibitory neuron connects to all other neurons in all modules
 end
