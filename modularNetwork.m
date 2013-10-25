@@ -3,6 +3,8 @@ function network = modularNetwork(nodes, communities, edges, pRewiring)
 	% pRewiring is the probability that a given node will be rewired
 	% Returns adjacency matrix
 
+	clf
+
 	network = zeros(nodes, nodes);
 
 	for community = 1:communities
@@ -23,11 +25,12 @@ function network = modularNetwork(nodes, communities, edges, pRewiring)
 	end
 
 	% Rewiring
+	tempNetwork = network;
 	for i = 1:nodes
 		for j = 1:nodes
 			if network(i,j) == 1 && rand < pRewiring
 				% remove existing edge
-				network(i,j) = 0;
+				tempNetwork(i,j) = 0;
 
 				%TODO: pick random other community from i node
 				nodeCommunity = mod(i,communities);
@@ -41,21 +44,23 @@ function network = modularNetwork(nodes, communities, edges, pRewiring)
 				end
 
 				communityNodes = communitySplit(nodes,communities,newCommunity);
-				newNode = communityNodes(randi(size(communityNodes,1)));
+				newNode = communityNodes(randi(size(communityNodes,2)));
 
-				nodeCommunity
-				newCommunity
-				communityNodes
-				newNode
-
-				network(i,newNode) = 1;
+				tempNetwork(i,newNode) = 1;
 			end
 		end
 	end
+	network = tempNetwork
 
 	% plot network (only works for 10 nodes)
 	if nodes == 10
+		subplot(1,2,1);
 		gplot(network,[3,9;8,9;6,4;4,7;10,8;5,2;2,6;7,7;4,4;1,8],'--*')
+
+		subplot(1,2,2);
+		plotAdjacencyGrid(nodes, communities, network);
+	else
+		plotAdjacencyGrid(nodes, communities, network);
 	end
 
 end
