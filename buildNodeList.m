@@ -8,10 +8,11 @@ function nodes = buildNodeList(numExcitatory, excitatoryType, numInhibitory, inh
 		nodes(i).community = div(i-1, div(numExcitatory,numCommunities))+1;
 	end
 
-	for i = (numExcitatory + 1):numNodes
-		nodes(i).type = inhibitoryType;
-		nodes(i).id = i;
+	for i = 1:numInhibitory
+		relI = i+numExcitatory;
+    nodes(relI).type = inhibitoryType;
+		nodes(relI).id = relI;
 		div(i-1, div(numInhibitory,numCommunities))+1
-		nodes(i).community = div(i-1, div(numInhibitory,numCommunities))+1;
+		nodes(relI).community = div(i-1, div(numInhibitory,numCommunities))+1;
 	end
 end

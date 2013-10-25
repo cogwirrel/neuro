@@ -16,5 +16,6 @@ for i = 1:size(ps,2)
 	% Create a modular network following the algorithm given in Topic 9.
 	networks(:,:,i) = modular(numExcitatory, numInhibitory, numCommunities, numExcitatoryEdgesPerCommunity, ps(i));
 	plotAdjacencyGrid(totalNodes, numCommunities, networks(:,:,i));
+  networks(:,:,i)
 end
 
