@@ -50,7 +50,7 @@ function layers = buildNeuronLayers(nodes, network, numExcitatory, numInhibitory
 			nodei = nodes(i);
 			nodej = nodes(j);
 
-			if (network(i,j))
+			if (network(j,i))
 				if nodei.type == EXCITATORY && nodej.type == EXCITATORY
 
 					layers{EXCITATORY}.S{EXCITATORY}(i,j) = 1;
