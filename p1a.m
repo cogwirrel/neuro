@@ -10,12 +10,15 @@ totalNodes = numExcitatory + numInhibitory;
 networks = zeros(totalNodes, totalNodes, size(ps,2));
 
 clf
+fig1 = figure;
 
 for i = 1:size(ps,2)
 	subplot(2,3,i);
 	% Create a modular network following the algorithm given in Topic 9.
 	networks(:,:,i) = modular(numExcitatory, numInhibitory, numCommunities, numExcitatoryEdgesPerCommunity, ps(i));
-	plotAdjacencyGrid(totalNodes, numCommunities, networks(:,:,i));
-  networks(:,:,i)
+	spy(networks(:,:,i));
+	xlabel(sprintf('p = %0.1f', ps(i)));
 end
+
+saveas(fig1, 'plots/p1a', 'fig');
 
