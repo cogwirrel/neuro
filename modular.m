@@ -41,10 +41,9 @@ function [network, nodes] = modular(numExcitatory, numInhibitory, numCommunities
 				%TODO: pick random other community from i node
 				node = getNodeWithId(nodes, i);
 
-				newCommunity = randi(numCommunities);
-				while(newCommunity == node.community)
-					newCommunity = randi(numCommunities);
-				end
+				allCommunities = 1:numCommunities;
+				otherCommunities = allCommunities(allCommunities ~=node.community);
+				newCommunity = datasample(otherCommunities,1);
 
 				newCommunityNodes = excitatoryCommunityNodes(newCommunity,:);
 				newNode = newCommunityNodes(randi(size(newCommunityNodes,2)));
@@ -65,7 +64,7 @@ function [network, nodes] = modular(numExcitatory, numInhibitory, numCommunities
 	for inhibitoryNode = inhibitoryNodes
 		
 		% Find 4 random excitatory nodes in the same module to connect to the current inhibitory node
-		excitatoryNodesInSameCommunity = excitatoryCommunityNodes(inhibitoryNode.community,:);
+		excitatoryNodesInSameCommunity = excitatoryCommunityNodes(datasample(1:numCommunities,1),:);
 		excitatoryNodeIdsInSameCommunity = [excitatoryNodesInSameCommunity.id];
 		excitatoryNodesToConnect = datasample(excitatoryNodeIdsInSameCommunity, numConnectionsFromExcitatory, 'Replace', false);
 
