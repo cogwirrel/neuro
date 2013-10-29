@@ -4,7 +4,7 @@ numExcitatory = 800;
 numInhibitory = 200;
 numCommunities = 8;
 numExcitatoryEdgesPerCommunity = 1000;
-ps = [0.1, 0.2, 0.3, 0.4, 0.5];
+ps = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5];
 
 totalNodes = numExcitatory + numInhibitory;
 networks = zeros(totalNodes, totalNodes, size(ps,2));
