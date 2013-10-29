@@ -15,7 +15,8 @@ fig1 = figure;
 for i = 1:size(ps,2)
 	subplot(2,3,i);
 	% Create a modular network following the algorithm given in Topic 9.
-	networks(:,:,i) = modular(numExcitatory, numInhibitory, numCommunities, numExcitatoryEdgesPerCommunity, ps(i));
+	[network, nodes] = modular(numExcitatory, numInhibitory, numCommunities, numExcitatoryEdgesPerCommunity, ps(i));
+	networks(:,:,i) = network;
 	spy(networks(:,:,i));
 	xlabel(sprintf('p = %0.1f', ps(i)));
 end

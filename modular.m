@@ -1,4 +1,4 @@
-function network = modular(numExcitatory, numInhibitory, numCommunities, numExcitatoryEdgesPerCommunity, pRewiring)
+function [network, nodes] = modular(numExcitatory, numInhibitory, numCommunities, numExcitatoryEdgesPerCommunity, pRewiring)
 
 	% Neuron types
 	EXCITATORY = 1;
