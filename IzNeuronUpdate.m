@@ -19,11 +19,11 @@ for j=1:length(layer)
             spikes = (delay(:, firings(k,2)) == t - firings(k,1));
             if ~isempty(layer{i}.I(spikes))
 
-               if i == 1 && j == 2 % EX->IN
-                  F = F * rand;
-               elseif i == 2 % IN -> *
-                  F = F * (rand - 1);
-               end
+               % if i == 1 && j == 2 % EX->IN
+               %    F = F * rand;
+               % elseif i == 2 % IN -> *
+               %    F = F * (rand - 1);
+               % end
 
                layer{i}.I(spikes) = layer{i}.I(spikes)+S(spikes,firings(k,2))*F;
             end
