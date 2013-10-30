@@ -6,7 +6,7 @@ numCommunities = 8;
 numExcitatoryEdgesPerCommunity = 1000;
 ps = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5];
 
-T = 20;
+T = 1000;
 
 % Neuron types
 EXCITATORY = 1;
@@ -18,10 +18,10 @@ layers = {};
 clf
 
 %for i = 1:size(ps,2)
-for i = 1:20
-	subplot(5,4,i)
+
+	%subplot(5,4,i)
 	% Create a modular network following the algorithm given in Topic 9.
-	[network, nodes] = modular(numExcitatory, numInhibitory, numCommunities, numExcitatoryEdgesPerCommunity, ps(2));
+	[network, nodes] = modular(numExcitatory, numInhibitory, numCommunities, numExcitatoryEdgesPerCommunity, ps(1));
 	layer = buildNeuronLayers(nodes, network, numExcitatory, numInhibitory);
 
 	% Initialise layers firings
@@ -29,10 +29,20 @@ for i = 1:20
 	layer{INHIBITORY}.firings = [];
 
 	for t = 1:T
-		layer = IzNeuronUpdate(layer, EXCITATORY, t, i);
-		layer = IzNeuronUpdate(layer, INHIBITORY, t, i);
+
+		% Display time every 1ms
+		t
+
+		layer{EXCITATORY}.I = ones(numExcitatory, 1) * 5;
+		layer{INHIBITORY}.I = zeros(numInhibitory, 1);
+
+		layer = IzNeuronUpdate(layer, EXCITATORY, t, 20);
+		layer = IzNeuronUpdate(layer, INHIBITORY, t, 20);
 	end
-	scatter(layer{1}.firings(:,1),layer{1}.firings(:,2));
+	subplot(2,1,1);
+	plot(layer{EXCITATORY}.firings(:,1),layer{EXCITATORY}.firings(:,2), '.');
+	subplot(2,1,2);
+	plot(layer{INHIBITORY}.firings(:,1),layer{INHIBITORY}.firings(:,2), '.');
 	%layers(i) = layer;
-end
+
 %end

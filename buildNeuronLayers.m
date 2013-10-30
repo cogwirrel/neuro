@@ -8,8 +8,8 @@ function layers = buildNeuronLayers(nodes, network, numExcitatory, numInhibitory
 
 	% Set up factors - taken from Topic 9 Experimental Setup 4
 	layers{EXCITATORY}.factor{EXCITATORY} = 17;
-	layers{EXCITATORY}.factor{INHIBITORY} = 50;
-	layers{INHIBITORY}.factor{EXCITATORY} = 2;
+	layers{EXCITATORY}.factor{INHIBITORY} = 2;
+	layers{INHIBITORY}.factor{EXCITATORY} = 50;
 	layers{INHIBITORY}.factor{INHIBITORY} = 1;
 
 	% Set up a,b,c and d parameters - taken from Topic 4
@@ -24,14 +24,16 @@ function layers = buildNeuronLayers(nodes, network, numExcitatory, numInhibitory
 	layers{INHIBITORY}.d = ones(numInhibitory, 1) .* 2;
 
 	% Set up intensity (I) values
-	layers{EXCITATORY}.I = ones(numExcitatory, 1) .* 20;
-	layers{INHIBITORY}.I = ones(numInhibitory, 1) .* 20;
+	layers{EXCITATORY}.I = ones(numExcitatory, 1) .* 5;
+	layers{INHIBITORY}.I = zeros(numInhibitory, 1);
 
 	% Set up initial u and v values
-	layers{EXCITATORY}.u = ones(numExcitatory, 1) .* -1;
 	layers{EXCITATORY}.v = ones(numExcitatory, 1) .* -65;
-	layers{INHIBITORY}.u = ones(numInhibitory, 1) .* -1;
 	layers{INHIBITORY}.v = ones(numInhibitory, 1) .* -65;
+
+	layers{EXCITATORY}.u = layers{EXCITATORY}.b .* layers{EXCITATORY}.v;
+	layers{INHIBITORY}.u = layers{INHIBITORY}.b .* layers{INHIBITORY}.v;
+	
 
 	% Initialise connections (S) to zeros
 	layers{EXCITATORY}.S{EXCITATORY} = zeros(numExcitatory, numExcitatory);
@@ -58,17 +60,17 @@ function layers = buildNeuronLayers(nodes, network, numExcitatory, numInhibitory
 
 				elseif nodei.type == EXCITATORY && nodej.type == INHIBITORY
 
-					layers{EXCITATORY}.S{INHIBITORY}(i,j - numExcitatory) = 1;
+					layers{EXCITATORY}.S{INHIBITORY}(i,j - numExcitatory) = rand - 1;
 					layers{EXCITATORY}.delay{INHIBITORY}(i,j - numExcitatory) = 1;
 
 				elseif nodei.type == INHIBITORY && nodej.type == EXCITATORY
 
-					layers{INHIBITORY}.S{EXCITATORY}(i - numExcitatory,j) = 1;
+					layers{INHIBITORY}.S{EXCITATORY}(i - numExcitatory,j) = rand;
 					layers{INHIBITORY}.delay{EXCITATORY}(i - numExcitatory,j) = 1;
 
 				else % nodei.type == INHIBITORY && nodej.type == INHIBITORY
 
-					layers{INHIBITORY}.S{INHIBITORY}(i - numExcitatory,j - numExcitatory) = 1;
+					layers{INHIBITORY}.S{INHIBITORY}(i - numExcitatory,j - numExcitatory) = rand - 1;
 					layers{INHIBITORY}.delay{INHIBITORY}(i - numExcitatory,j - numExcitatory) = 1;
 
 				end
