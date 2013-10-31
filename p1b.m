@@ -58,27 +58,22 @@ clf
 	end
 
 	firings = layer{EXCITATORY}.firings;
-	firingsCommunity = [];
-	figure(4)
-	MF1 = zeros(ceil(Tmax/ds), numCommunities);
+	windowSize = 50;
+	shiftAmount = 20;
+	meanFiringRates = zeros(ceil(Tmax/shiftAmount), numCommunities);
+	
 	for community = 1:numCommunities
 		communityFirings = firings([nodes(firings(:,2)).community] == community,:)
-
-		% Moving averages of firing rates in Hz for excitatory population
-		ws = 50; % window size - must be greater than or equal to Dmax
-		ds = 20; % slide window by ds
 		
-		% MF(i,j) is the firing rate for the ith largest module for the
-		% ws data points up to but not including j
-		for j = 1:ds:Tmax
-			MF1(ceil(j/ds), community) = sum(communityFirings(:,1) >= j-ws & ...
-				communityFirings(:,1) < j) / (ws*numExcitatory) * Tmax;
+		for i = 1:shiftAmount:Tmax
+			numFirings = sum(communityFirings(:,1) >= i-windowSize & communityFirings(:,1) < i);
+			meanFiringRates(ceil(i/shiftAmount), community) = numFirings / (windowSize*numExcitatory) * Tmax;
 		end
 
-		% Plot mean firing rates
-		% subplot(2,1,1);
-		plot(1:ds:Tmax,MF1)
 	end
+	
+	figure(4)
+	plot(1:shiftAmount:Tmax,meanFiringRates)
 
 figure(1)
 clf
