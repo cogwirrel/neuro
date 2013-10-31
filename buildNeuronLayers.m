@@ -13,19 +13,16 @@ function layers = buildNeuronLayers(nodes, network, numExcitatory, numInhibitory
 	layers{INHIBITORY}.factor{INHIBITORY} = 1;
 
 	% Set up a,b,c and d parameters - taken from Topic 4
+	r = rand(numExcitatory, 1);
 	layers{EXCITATORY}.a = ones(numExcitatory, 1) .* 0.02;
 	layers{EXCITATORY}.b = ones(numExcitatory, 1) .* 0.2;
-	layers{EXCITATORY}.c = ones(numExcitatory, 1) .* -65;
-	layers{EXCITATORY}.d = ones(numExcitatory, 1) .* 8;
+	layers{EXCITATORY}.c = -65+15*r.^2;
+	layers{EXCITATORY}.d = 8-6*r.^2;
 
 	layers{INHIBITORY}.a = ones(numInhibitory, 1) .* 0.02;
 	layers{INHIBITORY}.b = ones(numInhibitory, 1) .* 0.25;
 	layers{INHIBITORY}.c = ones(numInhibitory, 1) .* -65;
 	layers{INHIBITORY}.d = ones(numInhibitory, 1) .* 2;
-
-	% Set up intensity (I) values
-	layers{EXCITATORY}.I = ones(numExcitatory, 1) .* 5;
-	layers{INHIBITORY}.I = zeros(numInhibitory, 1);
 
 	% Set up initial u and v values
 	layers{EXCITATORY}.v = ones(numExcitatory, 1) .* -65;
