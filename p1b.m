@@ -41,11 +41,11 @@ clf
 		% Display time every 1ms
 		t
 
-		layer{EXCITATORY}.I = zeros(numExcitatory, 1); %rand(numExcitatory, 1) * 5;
+		layer{EXCITATORY}.I = rand(numExcitatory, 1) * 5;
 		layer{INHIBITORY}.I = zeros(numInhibitory, 1);
 
-		layer{EXCITATORY}.v = layer{EXCITATORY}.v + 30 * (poissrnd(lambda, numExcitatory, 1) > 0);
-		layer{INHIBITORY}.v = layer{INHIBITORY}.v + 30 * (poissrnd(lambda, numInhibitory, 1) > 0);
+		%layer{EXCITATORY}.v = layer{EXCITATORY}.v + 30 * (poissrnd(lambda, numExcitatory, 1) > 0);
+		%layer{INHIBITORY}.v = layer{INHIBITORY}.v + 30 * (poissrnd(lambda, numInhibitory, 1) > 0);
 
 		layer = IzNeuronUpdate(layer, EXCITATORY, t, 10);
 		layer = IzNeuronUpdate(layer, INHIBITORY, t, 10);
@@ -55,6 +55,29 @@ clf
 		
 		u1(t,1:numExcitatory) = layer{1}.u;
 		u2(t,1:numInhibitory) = layer{2}.u;
+	end
+
+	firings = layer{EXCITATORY}.firings;
+	firingsCommunity = [];
+	figure(4)
+	MF1 = zeros(ceil(Tmax/ds), numCommunities);
+	for community = 1:numCommunities
+		communityFirings = firings([nodes(firings(:,2)).community] == community,:)
+
+		% Moving averages of firing rates in Hz for excitatory population
+		ws = 50; % window size - must be greater than or equal to Dmax
+		ds = 20; % slide window by ds
+		
+		% MF(i,j) is the firing rate for the ith largest module for the
+		% ws data points up to but not including j
+		for j = 1:ds:Tmax
+			MF1(ceil(j/ds), community) = sum(communityFirings(:,1) >= j-ws & ...
+				communityFirings(:,1) < j) / (ws*numExcitatory) * Tmax;
+		end
+
+		% Plot mean firing rates
+		% subplot(2,1,1);
+		plot(1:ds:Tmax,MF1)
 	end
 
 figure(1)
@@ -100,3 +123,4 @@ xlabel('Time (ms)')
 	%layers(i) = layer;
 
 %end
+
