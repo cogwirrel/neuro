@@ -19,35 +19,17 @@ clf
 for p = 1:size(ps,2)
 
 	% Create a modular network following the algorithm given in Topic 9.
+	disp(sprintf('Creating Modular Network for p = %0.1f', ps(p)));
 	[network, nodes] = modular(numExcitatory, numInhibitory, numCommunities, numExcitatoryEdgesPerCommunity, ps(p));
 
 	% Set up our layers of neurons
 	layer = buildNeuronLayers(nodes, network, numExcitatory, numInhibitory);;
 
-	% Initialise layers firings
-	layer{EXCITATORY}.firings = [];
-	layer{INHIBITORY}.firings = [];
+	% Run our simulation of the neural network
+	disp(sprintf('Running Izhikevich Simulation for %dms', Tmax));
+	layer = runIzSimulation(layer, Tmax);
 
-	layer{EXCITATORY}.I = zeros(numExcitatory, 1);
-	layer{INHIBITORY}.I = zeros(numInhibitory, 1);
-
-	lambda = 0.01;
-
-	for t = 1:Tmax
-
-		% Display time every 1ms
-		t
-
-		layer{INHIBITORY}.I = zeros(numInhibitory, 1);
-
-		poisson = poissrnd(lambda, numExcitatory, 1);
-		poisson(poisson > 0) = 1;
-		layer{EXCITATORY}.I = 15 * poisson;
-		
-		layer = IzNeuronUpdate(layer, EXCITATORY, t, 20);
-		layer = IzNeuronUpdate(layer, INHIBITORY, t, 20);
-	end
-
+	% Downsample the mean firing rates
 	firings = layer{EXCITATORY}.firings;
 	windowSize = 50;
 	shiftAmount = 20;
