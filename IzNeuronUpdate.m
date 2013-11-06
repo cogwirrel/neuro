@@ -15,19 +15,12 @@ for j=1:length(layer)
          F = layer{i}.factor{j};
          % Sum current from incoming spikes
          k = size(firings,1);
-         while (k > 0 && firings(k, 1) > t - (Dmax + 1))
-            spikes = (delay(:, firings(k,2)) == t - firings(k,1));
+         while (k>0 && firings(k,1)>t-(Dmax+1))
+            spikes = (delay(:,firings(k,2))==t-firings(k,1));
             if ~isempty(layer{i}.I(spikes))
-
-               % if i == 1 && j == 2 % EX->IN
-               %    F = F * rand;
-               % elseif i == 2 % IN -> *
-               %    F = F * (rand - 1);
-               % end
-
                layer{i}.I(spikes) = layer{i}.I(spikes)+S(spikes,firings(k,2))*F;
             end
-            k = k - 1;
+            k = k-1;
          end;
          % Don't let I go below zero (shunting inhibition)
          % layer{i}.I = layer{i}.I.*(layer{i}.I > 0);
