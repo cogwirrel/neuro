@@ -1,23 +1,23 @@
 % Question 2
-% This runs the simulation to gather the data required for Question 2
+% This runs one trial of the simulation for Question 2
 
-numTrials = 20;
-pMin = 0.1;
-pMax = 0.5;
-Tmax = 60000;
+function p2simulation(trial)
 
-% Network Configuration
-numEx = 800;
-numIn = 200;
-numCom = 8;
-numExEdgesPerCom = 1000;
+	pMin = 0.1;
+	pMax = 0.5;
+	Tmax = 60000;
 
-% Neuron types
-EXCITATORY = 1;
-INHIBITORY = 2;
+	% Network Configuration
+	numEx = 800;
+	numIn = 200;
+	numCom = 8;
+	numExEdgesPerCom = 1000;
 
-% Repeat process for the number of trials
-for trial = 1:numTrials
+	% Neuron types
+	EXCITATORY = 1;
+	INHIBITORY = 2;
+
+	disp(sprintf('### Trial %d ###', trial));
 
 	% Create a modular network with rewiring probability p between pMin and pMax
 	p = pMin + rand * (pMax - pMin);
@@ -39,10 +39,10 @@ for trial = 1:numTrials
 	% Trim the first second of firings from the results
 	firingRates{trial} = {p, downsampledFiringRates(:,(1000/shiftAmount + 1):end)};
 
-end
+	% Save the data to a file
+	% firingRates is a cell array of trials.
+	% Each trial is a 2-element cell array of p, and the downsampled firing rates
+	% The downsampled firing rates are indexed as (community, firing rate)
+	save(sprintf('data/p2data%d.mat',trial), 'firingRates');
 
-% Save the data to a file
-% firingRates is a cell array of trials.
-% Each trial is a 2-element cell array of p, and the downsampled firing rates
-% The downsampled firing rates are indexed as (community, firing rate)
-save('p2data.mat', 'firingRates');
+end
