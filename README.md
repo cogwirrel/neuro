@@ -12,3 +12,12 @@ Computational Neurodynamics Coursework: Dynamical Complexity
    						'plots/firing0-5.fig'
 
    			Entry point for matlab code: 'p1bc.m'
+
+
+2.	Plot is 'plots/neuralcomplexity.fig'
+
+	Matlab code to run an individual simulation for 60 seconds is p2simulation.m
+
+	p2simulation.sh will run multiple trials in parallel
+
+	p2complexity.m reads the data obtained by p2simulation and plots the neural complexity

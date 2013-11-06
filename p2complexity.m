@@ -1,6 +1,6 @@
 % Plot the neural complexity of our 60 second simulations
 
-% This relies on p2simulation being run first
+% This relies on p2simulation being run first to gather the data
 
 trials = 50;
 collatedFiringRates = p2loaddata(trials);
@@ -16,7 +16,13 @@ for trial = 1:trials
 	% Covariance stationary firing rates
 	covStatFiringRates = aks_diff(aks_diff(firingRates));
 
+	% Calculate the neural complexity of the trial
 	neuralComplexities(trial) = neuralComplexity(covStatFiringRates');
 end
 
+% Plot the results
+fig = figure;
 plot(probabilities, neuralComplexities, '.');
+xlabel('Rewiring Probability p');
+ylabel('Neural Complexity');
+saveas(fig, 'plots/neuralcomplexity','fig');
