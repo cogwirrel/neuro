@@ -23,5 +23,5 @@ for i = 1:size(ps,2)
 	ylabel('Neuron Number (from)');
 end
 
-saveas(fig1, 'plots/p1a', 'fig');
+saveas(fig1, 'plots/connectivity', 'fig');
 
