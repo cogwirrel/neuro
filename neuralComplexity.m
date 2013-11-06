@@ -6,6 +6,7 @@ function nc = neuralComplexity(s)
 
 	nc = 0;
 	for j = 1:size(s,2)
-		nc = nc + (mutualInformation(j,s) - is);
+		nc = nc + (mutualInformation(j,s));% - is);
 	end
+	nc = nc - is;
 end

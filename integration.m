@@ -5,6 +5,7 @@ function i = integration(s)
 	i = 0;
 	sEntropy = entropy(s);
 	for j = 1:size(s,2)
-		i = i + (entropy(s(:,j)) - sEntropy);
+		i = i + entropy(s(:,j));% - sEntropy)
 	end
+	i = i - sEntropy;
 end
