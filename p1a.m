@@ -18,7 +18,9 @@ for i = 1:size(ps,2)
 	[network, nodes] = modular(numExcitatory, numInhibitory, numCommunities, numExcitatoryEdgesPerCommunity, ps(i));
 	networks(:,:,i) = network;
 	spy(networks(:,:,i));
-	xlabel(sprintf('p = %0.1f', ps(i)));
+	title(sprintf('p = %0.1f', ps(i)));
+	xlabel('Neuron Number (to)');
+	ylabel('Neuron Number (from)');
 end
 
 saveas(fig1, 'plots/p1a', 'fig');
