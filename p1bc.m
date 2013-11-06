@@ -12,8 +12,6 @@ Tmax = 1000;
 EXCITATORY = 1;
 INHIBITORY = 2;
 
-totalNodes = numExcitatory + numInhibitory;
-
 clf
 
 for p = 1:size(ps,2)
@@ -29,21 +27,10 @@ for p = 1:size(ps,2)
 	disp(sprintf('Running Izhikevich Simulation for %dms', Tmax));
 	layer = runIzSimulation(layer, Tmax);
 
-	% Downsample the mean firing rates
-	firings = layer{EXCITATORY}.firings;
+	% Downsample the mean firing rates of excitatory neurons
 	windowSize = 50;
 	shiftAmount = 20;
-	meanFiringRates = zeros(numCommunities, ceil(Tmax/shiftAmount));
-	
-	for community = 1:numCommunities
-		communityFirings = firings([nodes(firings(:,2)).community] == community,:);
-		
-		for i = 1:shiftAmount:Tmax
-			numFirings = sum(communityFirings(:,1) >= i-windowSize & communityFirings(:,1) < i);
-			meanFiringRates(community, ceil(i/shiftAmount)) = numFirings / (windowSize*numExcitatory) * Tmax;
-		end
-
-	end
+	downsampledFiringRates = meanFiringRates(nodes, layer{EXCITATORY}.firings, numCommunities, numExcitatory, Tmax, windowSize, shiftAmount);
 
 	fig = figure(p);
 
@@ -56,7 +43,7 @@ for p = 1:size(ps,2)
 
 	% Plot of mean firing rates for 1.c)
 	subplot(2,1,2);
-	plot(1:shiftAmount:Tmax, meanFiringRates);
+	plot(1:shiftAmount:Tmax, downsampledFiringRates);
 	xlabel('Time (ms) + 0s');
 	ylabel('Mean Firing Rate');
 
