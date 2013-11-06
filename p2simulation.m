@@ -37,10 +37,12 @@ for trial = 1:numTrials
 	downsampledFiringRates = meanFiringRates(nodes, layer{EXCITATORY}.firings, numCom, numEx, Tmax, windowSize, shiftAmount);
 
 	% Trim the first second of firings from the results
-	firingRates(trial,:,:) = downsampledFiringRates(:,(1000/shiftAmount + 1):end);
+	firingRates{trial} = {p, downsampledFiringRates(:,(1000/shiftAmount + 1):end)};
 
 end
 
 % Save the data to a file
-% firingRates is indexed by (trial, community, firing rate)
+% firingRates is a cell array of trials.
+% Each trial is a 2-element cell array of p, and the downsampled firing rates
+% The downsampled firing rates are indexed as (community, firing rate)
 save('p2data.mat', 'firingRates');
