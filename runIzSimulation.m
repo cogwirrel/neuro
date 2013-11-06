@@ -18,6 +18,11 @@ function layer = runIzSimulation(layer, Tmax)
 
 	for t = 1:Tmax
 
+		% Print status every second
+		if mod(t, 1000) == 0
+			disp(sprintf('%ds Elapsed', t / 1000));
+		end
+
 		% Give no current to inhibitory neurons
 		layer{INHIBITORY}.I = zeros(numInhibitory, 1);
 
@@ -29,7 +34,7 @@ function layer = runIzSimulation(layer, Tmax)
 		% Update both layers of neurons
 		layer = IzNeuronUpdate(layer, EXCITATORY, t, Dmax);
 		layer = IzNeuronUpdate(layer, INHIBITORY, t, Dmax);
-		
+
 	end
 
 end
