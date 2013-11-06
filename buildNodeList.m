@@ -11,6 +11,6 @@ function nodes = buildNodeList(numExcitatory, excitatoryType, numInhibitory, inh
 		relI = i+numExcitatory;
 		nodes(relI).type = inhibitoryType;
 		nodes(relI).id = relI;
-		nodes(relI).community = numCommunities + 1;
+		nodes(relI).community = div(i-1, div(numInhibitory,numCommunities))+1;
 	end
 end

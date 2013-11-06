@@ -22,7 +22,7 @@ clf
 
 	%subplot(5,4,i)
 	% Create a modular network following the algorithm given in Topic 9.
-	% [network, nodes] = modular(numExcitatory, numInhibitory, numCommunities, numExcitatoryEdgesPerCommunity, ps(1));
+	[network, nodes] = modular(numExcitatory, numInhibitory, numCommunities, numExcitatoryEdgesPerCommunity, 0);
 	
 	% have no connections (for testing)
 	% network = zeros(totalNodes,totalNodes);
@@ -49,11 +49,13 @@ clf
 		% layer{EXCITATORY}.I = rand(numExcitatory, 1) * 5;
 		layer{INHIBITORY}.I = zeros(numInhibitory, 1);
 
-		layer{EXCITATORY}.I = 15 * poissrnd(lambda, numExcitatory, 1);
+		poisson = poissrnd(lambda, numExcitatory, 1);
+		poisson(poisson > 0) = 1;
+		layer{EXCITATORY}.I = 15 * poisson;
 		% layer{INHIBITORY}.I = 20 * poissrnd(lambda, numInhibitory, 1);
 		
-		layer = IzNeuronUpdate(layer, EXCITATORY, t, 10);
-		layer = IzNeuronUpdate(layer, INHIBITORY, t, 10);
+		layer = IzNeuronUpdate(layer, EXCITATORY, t, 20);
+		layer = IzNeuronUpdate(layer, INHIBITORY, t, 20);
 	
 		v1(t,1:numExcitatory) = layer{1}.v;
 		v2(t,1:numInhibitory) = layer{2}.v;

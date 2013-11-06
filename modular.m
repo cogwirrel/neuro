@@ -42,7 +42,7 @@ function [network, nodes] = modular(numExcitatory, numInhibitory, numCommunities
 				node = getNodeWithId(nodes, i);
 
 				allCommunities = 1:numCommunities;
-				otherCommunities = allCommunities(allCommunities ~=node.community);
+				otherCommunities = allCommunities(allCommunities ~= node.community);
 				newCommunity = datasample(otherCommunities,1);
 
 				newCommunityNodes = excitatoryCommunityNodes(newCommunity,:);
@@ -64,8 +64,12 @@ function [network, nodes] = modular(numExcitatory, numInhibitory, numCommunities
 	for inhibitoryNode = inhibitoryNodes
 		
 		% Find 4 random excitatory nodes in the same module to connect to the current inhibitory node
-		excitatoryNodesInSameCommunity = excitatoryCommunityNodes(datasample(1:numCommunities,1),:);
+		excitatoryNodesInSameCommunity = excitatoryCommunityNodes(inhibitoryNode.community,:);
 		excitatoryNodeIdsInSameCommunity = [excitatoryNodesInSameCommunity.id];
+
+		% Make sure that we choose excitatory nodes that have not connected to any inhibitory nodes yet
+		%excitatoryNodesNotConnectedToInhibitory = excitatoryNodeIdsInSameCommunity(sum(network(excitatoryNodeIdsInSameCommunity, (numExcitatory+1):(numExcitatory+numInhibitory))')==0);
+
 		excitatoryNodesToConnect = datasample(excitatoryNodeIdsInSameCommunity, numConnectionsFromExcitatory, 'Replace', false);
 
 		% Add the connections to our adjacency matrix
