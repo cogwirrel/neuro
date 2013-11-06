@@ -38,13 +38,11 @@ for p = 1:size(ps,2)
 		% Display time every 1ms
 		t
 
-		% layer{EXCITATORY}.I = rand(numExcitatory, 1) * 5;
 		layer{INHIBITORY}.I = zeros(numInhibitory, 1);
 
 		poisson = poissrnd(lambda, numExcitatory, 1);
 		poisson(poisson > 0) = 1;
 		layer{EXCITATORY}.I = 15 * poisson;
-		% layer{INHIBITORY}.I = 20 * poissrnd(lambda, numInhibitory, 1);
 		
 		layer = IzNeuronUpdate(layer, EXCITATORY, t, 20);
 		layer = IzNeuronUpdate(layer, INHIBITORY, t, 20);
