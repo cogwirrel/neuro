@@ -16,8 +16,8 @@ function layers = buildNeuronLayers(nodes, network, numExcitatory, numInhibitory
 	r = rand(numExcitatory, 1);
 	layers{EXCITATORY}.a = ones(numExcitatory, 1) .* 0.02;
 	layers{EXCITATORY}.b = ones(numExcitatory, 1) .* 0.2;
-	layers{EXCITATORY}.c = -65+15*r.^2;
-	layers{EXCITATORY}.d = 8-6*r.^2;
+	layers{EXCITATORY}.c = ones(numExcitatory, 1) .* -65;%+15*r.^2;
+	layers{EXCITATORY}.d = ones(numExcitatory, 1) .* 8;%-6*r.^2;
 
 	layers{INHIBITORY}.a = ones(numInhibitory, 1) .* 0.02;
 	layers{INHIBITORY}.b = ones(numInhibitory, 1) .* 0.25;
