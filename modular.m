@@ -17,13 +17,14 @@ function [network, nodes] = modular(numExcitatory, numInhibitory, numCommunities
 
 	% Wire the excitatory neurons
 	for community = 1:numCommunities
+		% Keep track of excitatory nodes partitioned by their community
 		excitatoryCommunityNodes(community,:) = getNodesInCommunity(excitatoryNodes, community);
 		excitatoryCommunityNodeIds = [excitatoryCommunityNodes(community,:).id];
 
-		% sample random edges for current community
+		% Sample random edges for current community
 		randomEdges = datasample(allPairs(excitatoryCommunityNodeIds), numExcitatoryEdgesPerCommunity, 'Replace', false);
 
-		% add edges to adjacency matrix
+		% Add edges to adjacency matrix
 		for e = 1:size(randomEdges,1)
 			% EXCITATORY to EXCITATORY connection
 			network(randomEdges(e,1),randomEdges(e,2)) = 1;
@@ -35,11 +36,10 @@ function [network, nodes] = modular(numExcitatory, numInhibitory, numCommunities
 	for i = 1:size(network,1)
 		for j = 1:size(network,2)
 			if network(i,j) == 1 && rand < pRewiring
-				% remove existing edge
+				% Remove existing edge
 				tempNetwork(i,j) = 0;
 
-				%TODO: pick random other community from i node
-				node = getNodeWithId(nodes, i);
+				node = nodes(i);
 
 				allCommunities = 1:numCommunities;
 				otherCommunities = allCommunities(allCommunities ~= node.community);
@@ -66,9 +66,6 @@ function [network, nodes] = modular(numExcitatory, numInhibitory, numCommunities
 		% Find 4 random excitatory nodes in the same module to connect to the current inhibitory node
 		excitatoryNodesInSameCommunity = excitatoryCommunityNodes(inhibitoryNode.community,:);
 		excitatoryNodeIdsInSameCommunity = [excitatoryNodesInSameCommunity.id];
-
-		% Make sure that we choose excitatory nodes that have not connected to any inhibitory nodes yet
-		%excitatoryNodesNotConnectedToInhibitory = excitatoryNodeIdsInSameCommunity(sum(network(excitatoryNodeIdsInSameCommunity, (numExcitatory+1):(numExcitatory+numInhibitory))')==0);
 
 		excitatoryNodesToConnect = datasample(excitatoryNodeIdsInSameCommunity, numConnectionsFromExcitatory, 'Replace', false);
 
