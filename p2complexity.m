@@ -2,7 +2,8 @@
 
 % This relies on p2simulation being run first to gather the data
 
-trials = 50;
+% Load the saved data from previously run trials
+trials = 300;
 collatedFiringRates = p2loaddata(trials);
 
 for trial = 1:trials

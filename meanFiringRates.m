@@ -1,4 +1,5 @@
 function meanFiring = meanFiringRates(nodes, firings, numCommunities, numExcitatory, Tmax, windowSize, shiftAmount)
+	% Downsample the firings into mean firing rates with given windowSize and shiftAmount
 
 	meanFiring = zeros(numCommunities, ceil(Tmax/shiftAmount));
 	

@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # p2simulation.sh
-# Runs 20 trials in separate processes for Q2
+# Runs trials in separate processes for Q2
 
 # Kick off different trials in different 
-for i in {1..20}
+for i in {1..300}
 do
 	echo "Starting simulation $i"
 

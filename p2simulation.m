@@ -3,7 +3,8 @@
 
 function p2simulation(trial)
 
-	pMin = 0.1;
+	% pMin 0.0 instead of 0.1 as interesting to see full graph
+	pMin = 0.0;
 	pMax = 0.5;
 	Tmax = 60000;
 
@@ -19,7 +20,7 @@ function p2simulation(trial)
 
 	disp(sprintf('### Trial %d ###', trial));
 
-	% Create a modular network with rewiring probability p between pMin and pMax
+	% Create a modular network with random rewiring probability p between pMin and pMax
 	p = pMin + rand * (pMax - pMin);
 	disp(sprintf('Creating Modular Network for p = %0.4f', p));
 	[network, nodes] = modular(numEx, numIn, numCom, numExEdgesPerCom, p);

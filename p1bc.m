@@ -1,11 +1,15 @@
 % Question 1, part b and c.
 
-numExcitatory = 800;
-numInhibitory = 200;
-numCommunities = 8;
-numExcitatoryEdgesPerCommunity = 1000;
+% Network parameters
+numEx = 800; % Number of Excitatory Neurons
+numIn = 200; % Number of Inhibitory Neurons
+numCom = 8;  % Number of Communities (Modules)
+numExEdgesPerCom = 1000; % Number of edges connecting excitatory neurons per community
+
+% Set of probabilities to generate a network for
 ps = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5];
 
+% Time to run each simulation
 Tmax = 1000;
 
 % Neuron types
@@ -18,10 +22,10 @@ for p = 1:size(ps,2)
 
 	% Create a modular network following the algorithm given in Topic 9.
 	disp(sprintf('Creating Modular Network for p = %0.1f', ps(p)));
-	[network, nodes] = modular(numExcitatory, numInhibitory, numCommunities, numExcitatoryEdgesPerCommunity, ps(p));
+	[network, nodes] = modular(numEx, numIn, numCom, numExEdgesPerCom, ps(p));
 
 	% Set up our layers of neurons
-	layer = buildNeuronLayers(nodes, network, numExcitatory, numInhibitory);;
+	layer = buildNeuronLayers(nodes, network, numEx, numIn);;
 
 	% Run our simulation of the neural network
 	disp(sprintf('Running Izhikevich Simulation for %dms', Tmax));
@@ -30,7 +34,7 @@ for p = 1:size(ps,2)
 	% Downsample the mean firing rates of excitatory neurons
 	windowSize = 50;
 	shiftAmount = 20;
-	downsampledFiringRates = meanFiringRates(nodes, layer{EXCITATORY}.firings, numCommunities, numExcitatory, Tmax, windowSize, shiftAmount);
+	downsampledFiringRates = meanFiringRates(nodes, layer{EXCITATORY}.firings, numCom, numEx, Tmax, windowSize, shiftAmount);
 
 	fig = figure(p);
 

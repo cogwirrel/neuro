@@ -1,4 +1,6 @@
 function layer = runIzSimulation(layer, Tmax)
+	% Simulate excitatory and inhibitory neurons firing according to
+	% Izhikevich's model, for given time Tmax
 
 	% Neuron types
 	EXCITATORY = 1;
